@@ -94,13 +94,14 @@ class Loan(models.Model):
         ('Faulu','Mshwari'),
         ('Tala','fuliza')
     )
-    loan_type=models.CharField(max_length=10,choices=loan_typ,null='True')
+    loan_type=models.CharField(max_length=10,choices=loan_typ,null=True)
     interest_rate=models.SmallIntegerField()
     date=models.DateTimeField(default=datetime.now)
     loan_Id=models.CharField(max_length=30)
     walletb=models.ForeignKey(null=True,on_delete=models.CASCADE,to=Walletb)
-    
     loan_term=models.IntegerField()
+
+    
 class Reward(models.Model):
      date=models.DateTimeField(default=datetime.now)
      recepient=models.ForeignKey(on_delete=models.CASCADE,to=Customer)

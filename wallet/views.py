@@ -9,6 +9,8 @@ from django.views.generic.base import View
 def home_page(request):
     return render(request,"wallet/index.html")
 
+
+
 def register_customer(request):
     if request.method=='POST':
         form=CustomerRegisterationForm(request.POST)
