@@ -1,8 +1,16 @@
+from email import message
 from django.shortcuts import render
 from .forms import AccountRegistrationForm, CardRegistrationForm, CustomerRegisterationForm, LoanRegistrationForm, NotificationRegistrationForm, ReceiptRegistrationForm, RegisterTransactionForm, RewardRegistrationForm,ThirdPartyRegistrationForm, WalletRegistrationForm
 from .models import Account, Card, Customer, Loan, Notifcation, Receipt, Reward, ThirdParty, Transaction, Walletb
 from django.shortcuts import redirect
 from django.views.generic.base import View
+from rest_framework import views
+from rest_framework.response import Response
+# form django.core.exceptions import ObjectDoesNotExist
+
+
+
+
 
 # Create your views here
 

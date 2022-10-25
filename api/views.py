@@ -1,10 +1,23 @@
+from email import message
+from urllib import response
 from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from django.views.generic.base import View
+from wallet.views import views
+
+
+
+
 from wallet.models import Account, Customer, Notifcation, Receipt, Transaction, Walletb,Card,Loan
 from .serializers import AccountSerializer, CardSerializer, CustomerSerializer, LoanSerializer, ReceiptSerializer, TransactionSerializer, WalletSerializer,NotificationSerializer
 
+# form django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset=Customer.objects.all()  #request info
@@ -38,6 +51,95 @@ class ReceiptViewSet(viewsets.ModelViewSet):
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset=Notifcation.objects.all()
     serializer_class=NotificationSerializer
+
+
+
+class AccountDepositView(views.APIView):
+    def post(self,request,format=None):
+        account_id=request.data["account_id"]    #creating account id 
+        amount=request.data["amount"]
+        try:
+            account=Account.objects.get(id=account_id)    
+        except ObjectDoesNotExist:  #whenn no object exist
+            return Response("Account Not Found", status=404)
+        message, status = account.deposit(amount) 
+        return Response (message,status=status)
+    
+
+
+    def get(self,request,pk,format=None):
+        account = Account.objects.get(pk=pk)   #create for single object view
+        if request.method == 'GET':             #specified request to be get method 
+            serializer =AccountSerializer(account)   #serialize the object
+            return Response(serializer.data)  
+
+class AccountWithdrawalView(views.APIView):
+    def post(self,request,pk,format=None):
+        account_id=request.data["account_id"]    #creating account id 
+        amount=request.data["amount"]
+        try:
+            account=Account.objects.get(id=account_id)    
+        except ObjectDoesNotExist:  #whenn no object exist
+            return Response("Account Not Found", status=404)
+        message, status = account.withdraw(amount) 
+        return Response (message,status=status)
+    
+
+
+
+
+#create an Api for a single account.
+        
+class AccountTransferView(views.APIView):
+    def post(self,request,pk,format=None):
+        account_1=Account.objects.get(pk=pk)
+        account_id=request.data["destination"]   
+        amount=request.data["amount"]  #to handle json data coming
+        # destination_account=request.data["destination"]
+        
+
+        try:
+            account=Account.objects.get(id=account_id)    
+        except ObjectDoesNotExist:  #whenn no object exist
+            return Response("Account Not Found", status=404)
+        message, status = account_1.transfer(amount) 
+        return Response (message,status=status)
+class AccountLoanRequestView(views.APIView):
+    def post(self,request,format=None):
+        account_id=request.data["account_id"]
+        amount=request.data["amount"]
+        try:
+            account=Account.objects.get(id=account_id)    
+        except ObjectDoesNotExist:  #whenn no object exist
+            return Response("Account Not Found", status=404)
+        message, status = account.loan_request(amount) 
+        return Response (message,status=status)
+
+
+class AccountLoanRepaymentView(views.APIView):
+    def post(self,request,format=None):
+        account_id=request.data["account_id"]
+        amount=request.data["amount"]
+        try:
+            account=Account.objects.get(id=account_id)    
+        except ObjectDoesNotExist:  #whenn no object exist
+            return Response("Account Not Found", status=404)
+        message, status = account.loan_repayment(amount) 
+        return Response (message,status=status)
+class AccountBuyAirtimeView(views.APIView):
+    def post(self,request,format=None):
+        account_id=request.data["account_id"]
+        airtime_money=request.data["amount"]
+        try:
+            account=Account.objects.get(id=account_id)
+
+        except ObjectDoesNotExist:
+            return Response("Account not found",status=404)
+
+        message,status=account.buy_airtime(airtime_money)
+        return Response(message,status=status)
+        
+
 
 
 

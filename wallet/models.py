@@ -1,6 +1,11 @@
 from datetime import datetime
+from email import message
+from email.policy import default
 from random import choices
 from django.db import models
+
+
+loan_balance=0
 
 class Customer(models.Model):
     first_name= models.CharField(max_length=20)
@@ -22,12 +27,94 @@ class Customer(models.Model):
 class Account(models.Model):
     account_number= models.PositiveIntegerField()
     customer=models.ForeignKey(to=Customer,on_delete = models.CASCADE,null=True)
-    balance=models.IntegerField()
+    account_balance=models.IntegerField()
     pin=models.PositiveSmallIntegerField()
+    date_created=models.DateTimeField(default=datetime.now)
     def __str__(self):
             return str(self.customer)
-             
 
+    def deposit(self,amount):
+        if amount< 0:
+            message="Invalid amount"
+            status=403
+        else:
+            self.account_balance += amount
+            self.save()
+            message=f"You have deposited this {amount}, your new balance is {self.account_balance}"
+            status=200
+        return message, status
+
+
+    def withdraw(self,amount):
+        if amount< 0:
+            message="Invalid amount"
+            status=403
+        else:
+            self.account_balance -= amount
+            self.save()
+            message=f"Hello {self.customer} you have withdrawn this Ksh.{amount}, your new balance is Ksh.{self.account_balance}"
+            status=200
+        return message, status
+
+
+    def transfer(self,destination,amount):
+        if amount <= 0:
+            message =  "Invalid amount"
+            status = 403
+        
+
+        
+        elif amount > self.account_balance:
+            message =  "Insufficient balance for your account"
+            status = 403
+        
+        else:
+            self.account_balance -= amount
+            self.save()
+            destination.deposit(amount)    #belongs to second account
+            
+            message = f"You have transfered {amount}, your new balance is {self.account_balance}"
+            status = 200
+        return message, status
+    def loan_request(self,amount):
+        if amount <= 0:
+            message =  "Invalid amount"
+            status = 403
+        else:
+            self.loan_balance += amount
+            self.account_balance += amount
+            self.save()            
+            message = f"Hello {self.customer}, You have requested for loan of  Ksh.{amount}, your new balance is {self.account_balance}"
+            status = 200
+        return message, status
+
+    def loan_repayment(self,amount):
+        if amount <= 0:
+            message =  "Invalid amount"
+            status = 403
+        else:
+            self.account_balance -= self.loan_balance
+            self.save()            
+            message = f"Hello {self.customer}, Your  loan of  Ksh.{self.loan_balance} has been repayed, your new balance is {self.account_balance}"
+            status = 200
+        return message, status
+
+    def buy_airtime(self,amount):
+        if amount< 0:
+            message="Invalid amount"
+            status=403
+        else:
+            self.account_balance += amount
+            self.save()
+            message=f" Hello {self.customer}, You have bought airtime for Ksh.{amount}, your new balance is {self.account_balance} on {self.date_created.strftime('%d/%m/%y/, %H/%M/%S')} "
+            status=200
+        return message, status
+
+
+
+
+    
+   
 class Walletb(models.Model):
     customer=models.OneToOneField(null=True,on_delete=models.CASCADE,to=Customer)
     currency_supported=models.CharField(max_length=27)
@@ -48,6 +135,12 @@ class Transaction(models.Model):
     def __str__(self):
         return str(self.walletb)
 
+
+    
+
+    
+  
+ 
 class Card(models.Model):
     card_number=models.IntegerField()
     expiry_date=models.DateTimeField(default=datetime.now)

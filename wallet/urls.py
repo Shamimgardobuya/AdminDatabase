@@ -2,6 +2,9 @@ from django.urls import path
 from .views import SearchCustomer, account_profile, card_profile, edit_account,customer_profile,edit_customer, edit_card, edit_receipts, edit_transaction, edit_wallet, home_page, list_accounts, list_card, list_loan, list_receipts, list_reward, list_thirdparty, list_transaction, list_wallet, notification_list, receipt_profile, register_account, register_card, register_customer, register_loan, register_notification, register_receipt, register_reward, register_thirdparty, register_transaction, register_wallet,transaction_profile, wallet_profile
 
 urlpatterns=[
+    #deposit api
+
+
     path("",home_page,name='home'),
     # path("customers/",list_customers,name='all_customers'),
     path("customers_get/",SearchCustomer.as_view(),name='all_customers'),

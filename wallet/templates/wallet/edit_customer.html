@@ -17,46 +17,48 @@
     <form method="Post">
         {%csrf_token%}
         <!-- {{forms.as_p}} -->
-        <div class="card" style="width: 40rem; height: 40rem;margin:4% 0% 0% 26%;background-color:#f3e272;">
-        
-            <label for="firstname" style="width:29rem; margin:3% 0% 0% 13%;color: white;">Firstname
+        <div class="card" style="width: 40rem; height: 45rem;margin:0.5% 0% 0% 26%;background-color:whitesmoke;">
+            <div class="card-header" style="background-color:#36B4B2 ;">
+                    Customer
+              </div>
+            <label for="firstname" style="width:29rem; margin:1% 0% 0% 13%;color: black;">Firstname:
                 {{forms.first_name}}  
                 <!-- <input type="text" placeholder="Enter first_name"> -->
             </label>
         <!-- <div class="col"> -->
 
-            <label for="lastname" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Lastname
+            <label for="lastname" style="width:29rem; margin:0.5% 0% 0% 13%;color: black;">Lastname:
                 {{forms.last_name}}  
                 
             </label>
 
-            <label for="address" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Address
+            <label for="address" style="width:29rem; margin:0.5% 0% 0% 13%;color: black;">Address:
                 {{forms.address}}  
                 
             </label>
-            <label for="email" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Email
+            <label for="email" style="width:29rem; margin:0.5% 0% 0% 13%;color: black;">Email:
                 {{forms.email}}  
                 
             </label>  
-            <label for="phone_number" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Phone Number
+            <label for="phone_number" style="width:29rem; margin:0.5% 0% 0% 13%;color: black;">Phone:
                 {{forms.phone_number}}  
                 
             </label>
         <!-- </label>  -->
-         <label for="gender" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Gender
+         <label for="gender" style="width:29rem; margin:0.5% 0% 0% 13%;color: black;">Gender:
             {{forms.gender}}  
             
         </label>
-        <label for="gender" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Age
+        <label for="gender" style="width:29rem; margin:0% 0% 0% 13%;color: black;">Age:
             {{forms.age}}  
             
         </label>
     <!-- </label>   -->
-    <label for="nationality" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Nationality
+    <label for="nationality" style="width:29rem; margin:0% 0% 0% 13%;color: black;">Nationality:
         {{forms.nationality}}  
         
     </label>
-    <label for="your picture" style="width:29rem; margin:0% 0% 0% 13%;color: white;">Image
+    <label for="your picture" style="width:29rem; margin:0% 0% 0% 13%;color: black;">Image:
         {{forms.profile_picture}}  
         
     </label>

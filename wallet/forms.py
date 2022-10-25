@@ -25,7 +25,7 @@ class CustomerRegisterationForm(forms.ModelForm):
 class AccountRegistrationForm(forms.ModelForm):
     class Meta:
         model=Account
-        fields=("customer","balance","pin","account_number")
+        fields=("customer","account_balance","pin","account_number")
         widgets={
             "customer":forms.Select(attrs={'class':"form-control"}),
             "balance":forms.TextInput(attrs={'class':"form-control"}),
