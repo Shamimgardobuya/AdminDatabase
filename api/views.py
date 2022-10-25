@@ -99,10 +99,10 @@ class AccountTransferView(views.APIView):
         
 
         try:
-            account=Account.objects.get(id=account_id)    
+            account=Account.objects.get(id=account_id)    #get destination account
         except ObjectDoesNotExist:  #whenn no object exist
             return Response("Account Not Found", status=404)
-        message, status = account_1.transfer(amount) 
+        message, status = account_1.transfer(account,amount)    #transfer to destination
         return Response (message,status=status)
 class AccountLoanRequestView(views.APIView):
     def post(self,request,format=None):
