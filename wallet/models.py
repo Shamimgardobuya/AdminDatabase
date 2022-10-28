@@ -5,7 +5,6 @@ from random import choices
 from django.db import models
 
 
-loan_balance=0
 
 class Customer(models.Model):
     first_name= models.CharField(max_length=20)
@@ -30,8 +29,11 @@ class Account(models.Model):
     account_balance=models.IntegerField()
     pin=models.PositiveSmallIntegerField()
     date_created=models.DateTimeField(default=datetime.now)
+    loan_balance2=models.IntegerField(null=True)
+    # loan_balance=models.ForeignKey('Loan',on_delete=models.CASCADE,null=True,related_name='Loan')
+    
     def __str__(self):
-            return str(self.customer)
+        return str(self.customer)
 
     def deposit(self,amount):
         if amount< 0:
@@ -76,26 +78,32 @@ class Account(models.Model):
             message = f"You have transfered {amount}, your new balance is {self.account_balance}"
             status = 200
         return message, status
+    # @property
     def loan_request(self,amount):
+        self.loan_balance2=0
+
         if amount <= 0:
             message =  "Invalid amount"
             status = 403
         else:
-            self.loan_balance += amount
+            self.loan_balance2+= amount
             self.account_balance += amount
             self.save()            
             message = f"Hello {self.customer}, You have requested for loan of  Ksh.{amount}, your new balance is {self.account_balance}"
             status = 200
         return message, status
-
+    
+    # @property
     def loan_repayment(self,amount):
+        
+        # self.loan_balance2=0
         if amount <= 0:
             message =  "Invalid amount"
             status = 403
         else:
-            self.account_balance -= self.loan_balance
+            self.account_balance -= self.loan_balance2
             self.save()            
-            message = f"Hello {self.customer}, Your  loan of  Ksh.{self.loan_balance} has been repayed, your new balance is {self.account_balance}"
+            message = f"Hello {self.customer}, Your  loan of  Ksh.{self.loan_balance2} has been repayed, your new balance is {self.account_balance} "
             status = 200
         return message, status
 
@@ -104,7 +112,7 @@ class Account(models.Model):
             message="Invalid amount"
             status=403
         else:
-            self.account_balance += amount
+            self.account_balance -= amount
             self.save()
             message=f" Hello {self.customer}, You have bought airtime for Ksh.{amount}, your new balance is {self.account_balance} on {self.date_created.strftime('%d/%m/%y/, %H/%M/%S')} "
             status=200
@@ -190,15 +198,15 @@ class Loan(models.Model):
     loan_type=models.CharField(max_length=10,choices=loan_typ,null=True)
     interest_rate=models.SmallIntegerField()
     date=models.DateTimeField(default=datetime.now)
-    loan_Id=models.CharField(max_length=30)
-    walletb=models.ForeignKey(null=True,on_delete=models.CASCADE,to=Walletb)
-    loan_term=models.IntegerField()
+    # loan_Id=models.CharField(max_length=30)
+    account=models.ForeignKey(null=True,on_delete=models.CASCADE,to=Account,related_name='AccountA')
+    # loan_term=models.IntegerField()
 
     
 class Reward(models.Model):
-     date=models.DateTimeField(default=datetime.now)
-     recepient=models.ForeignKey(on_delete=models.CASCADE,to=Customer)
-     points=models.IntegerField(null=True)
+    date=models.DateTimeField(default=datetime.now)
+    recepient=models.ForeignKey(on_delete=models.CASCADE,to=Customer)
+    points=models.IntegerField(null=True)
 
 
 

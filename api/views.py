@@ -1,14 +1,13 @@
-from email import message
-from urllib import response
-from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from django.views.generic.base import View
 from wallet.views import views
+
+from email import message
+from urllib import response
+from django.shortcuts import render
 
 
 
@@ -74,7 +73,7 @@ class AccountDepositView(views.APIView):
             return Response(serializer.data)  
 
 class AccountWithdrawalView(views.APIView):
-    def post(self,request,pk,format=None):
+    def post(self,request,format=None):
         account_id=request.data["account_id"]    #creating account id 
         amount=request.data["amount"]
         try:
@@ -100,7 +99,7 @@ class AccountTransferView(views.APIView):
 
         try:
             account=Account.objects.get(id=account_id)    #get destination account
-        except ObjectDoesNotExist:  #whenn no object exist
+        except ObjectDoesNotExist:  #when no object exist
             return Response("Account Not Found", status=404)
         message, status = account_1.transfer(account,amount)    #transfer to destination
         return Response (message,status=status)

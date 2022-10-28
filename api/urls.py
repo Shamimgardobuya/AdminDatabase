@@ -31,13 +31,7 @@ urlpatterns=[
       path("loan_request/",AccountLoanRequestView.as_view(),name="loan-view"),
       path("loan_repayment/",AccountLoanRepaymentView.as_view(),name="repay-loan-view"),
       path("buy_airtime/",AccountBuyAirtimeView.as_view(),name="repay-loan-view")
-
-
-
-
-
-
-
+      
 
 ]
 

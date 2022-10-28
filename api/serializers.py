@@ -17,7 +17,7 @@ class WalletSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model=Account
-        fields=("account_number","customer","account_balance","pin")
+        fields=("account_number","customer","account_balance","pin","loan_balance")
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,7 +32,9 @@ class TransactionSerializer(serializers.ModelSerializer):
 class LoanSerializer(serializers.ModelSerializer):
     class Meta:
         model= Loan 
-        fields=("loan_amount","loan_type","interest_rate","date","loan_term","loan_Id","walletb")
+        fields=("loan_amount","loan_type","interest_rate","date")
+        
+        # "loan_term","loan_Id","walletb")
 
 
 class ReceiptSerializer(serializers.ModelSerializer):

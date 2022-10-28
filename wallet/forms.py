@@ -108,14 +108,15 @@ class ReceiptRegistrationForm(forms.ModelForm):
 class LoanRegistrationForm(forms.ModelForm):
     class Meta:
         model=Loan
-        fields=("loan_amount","loan_type","interest_rate","date","loan_Id","walletb","loan_term")
+        fields=("loan_amount","loan_type","interest_rate","date")
+        # "loan_Id","walletb","loan_term")
         widgets={
             "loan_amount":forms.NumberInput(attrs={'class':"form-control"}),
             "loan_type":forms.Select(attrs={'class':"form-control"}),
             "interest_rate":forms.NumberInput(attrs={'class':"form-control"}),
             "date":forms.DateTimeInput(attrs={'class':"form-control"}),
-            "loan_Id":forms.NumberInput(attrs={'class':"form-control"}),
-            "walletb":forms.Select(attrs={'class':"form-control"})
+            # "loan_Id":forms.NumberInput(attrs={'class':"form-control"}),
+            # "walletb":forms.Select(attrs={'class':"form-control"})
 
         }
 class RewardRegistrationForm(forms.ModelForm):

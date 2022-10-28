@@ -46,8 +46,9 @@ class ReceiptAdmin(admin.ModelAdmin):
      search_fields=('receipt_number','receipt_date',Transaction)
 admin.site.register(Receipt,ReceiptAdmin)
 class LoanAdmin(admin.ModelAdmin):
-     list_display=('loan_Id','loan_term',Walletb)
-     search_fields=('loan_Id','loan_term',Walletb)
+     list_display=('date',
+     'loan_type',Walletb)
+     search_fields=('date','loan_type',Walletb)
 admin.site.register(Loan,LoanAdmin)
 class RewardAdmin(admin.ModelAdmin):
      list_display=('date','points',Customer)
