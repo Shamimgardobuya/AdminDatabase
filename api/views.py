@@ -8,7 +8,7 @@ from wallet.views import views
 from email import message
 from urllib import response
 from django.shortcuts import render
-
+from rest_framework import status
 
 
 
@@ -113,7 +113,14 @@ class AccountLoanRequestView(views.APIView):
             return Response("Account Not Found", status=404)
         message, status = account.loan_request(amount) 
         return Response (message,status=status)
-
+    def put(self,request,id = None):
+        loan_requests = Loan.objects.filter(id = id)
+        serializer = LoanSerializer(loan_requests, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
+    
 
 class AccountLoanRepaymentView(views.APIView):
     def post(self,request,format=None):

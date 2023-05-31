@@ -13,7 +13,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from email.policy import default
 from pathlib import Path
 import os
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# Quick-start development sDJANGO_SETTINGS_MODULE = digitalwallet.settings
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,15 +26,37 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&4y5=rh&+!@^y-ins^!b-4twb84j8^4uku=i_kfg)y!e_4n$4d'
+SECRET_KEY = '_xf!(e78v(+gdb(^ci&0+#@-1)lp&b(fxvx1_&o(#s_kmj&n*&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CORS_ALLOWED_ORIGINS = [
+   "http://localhost:3000"
+]
+TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
 
 # Application definition
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'TEST_REQUEST_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
 
 INSTALLED_APPS = [
     
@@ -43,11 +69,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'import_export',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -88,11 +118,14 @@ WSGI_APPLICATION = 'digitalwallet.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':"django.db.backends.postgresql",
-        "NAME":"myproject",
-        "USER":"myprojectuser",
-        "PASSWORD":"password",
+        "NAME":"digitalwallet",
+        "USER":"shamim",
+        "PASSWORD":"enchantment",
         "HOST":"localhost",
         "PORT":5432,
+        'TEST' : {
+            'NAME' : 'my_project_test'
+        }
     }
 }
 
