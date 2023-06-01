@@ -192,8 +192,8 @@ class Receipt(models.Model):
 class Loan(models.Model):
     loan_amount=models.BigIntegerField()
     loan_typ=(
-        ('Faulu','Mshwari'),
-        ('Tala','fuliza')
+        ('Mshwari','Mshwari'),
+        ('fuliza','fuliza')
     )
     loan_type=models.CharField(max_length=10,choices=loan_typ,null=True)
     interest_rate=models.SmallIntegerField()
