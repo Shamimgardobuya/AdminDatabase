@@ -32,8 +32,11 @@ SECRET_KEY = '_xf!(e78v(+gdb(^ci&0+#@-1)lp&b(fxvx1_&o(#s_kmj&n*&'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CSRF_COOKIE_PATH = '/'
+CSRF_COOKIE_SAMESITE = 'Strict' 
+CSRF_COOKIE_SECURE = True
 CORS_ALLOWED_ORIGINS = [
-   "http://localhost:3000"
+   "http://localhost:3004"
 ]
 TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
 
@@ -55,6 +58,8 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.authentication.TokenAuthentication',
+
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
@@ -63,8 +68,7 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = [
     
-    'wallet',
-    'api',
+   
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +78,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'import_export',
     'corsheaders'
+    'wallet',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -89,11 +95,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'digitalwallet.urls'
-
+REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [REAL_BASE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -170,7 +176,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT='Media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 STATICFILE_DIRS=(
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(REAL_BASE_DIR,'static'),
 )
 
 # Default primary key field type
