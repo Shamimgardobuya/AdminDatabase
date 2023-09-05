@@ -8,8 +8,9 @@ from wallet.views import views
 from email import message
 from urllib import response
 from django.shortcuts import render
-
-
+from rest_framework import status
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect,ensure_csrf_cookie
 
 
 from wallet.models import Account, Customer, Notifcation, Receipt, Transaction, Walletb,Card,Loan
@@ -103,17 +104,30 @@ class AccountTransferView(views.APIView):
             return Response("Account Not Found", status=404)
         message, status = account_1.transfer(account,amount)    #transfer to destination
         return Response (message,status=status)
+
 class AccountLoanRequestView(views.APIView):
+    @method_decorator(csrf_protect)
     def post(self,request,format=None):
         account_id=request.data["account_id"]
         amount=request.data["amount"]
+        # interest_rate=request.data["interest_rate"]
+        # loan_type=request.data["loan_type"]
+        # date=request.data["date"]
+
         try:
             account=Account.objects.get(id=account_id)    
         except ObjectDoesNotExist:  #whenn no object exist
             return Response("Account Not Found", status=404)
         message, status = account.loan_request(amount) 
         return Response (message,status=status)
-
+    def put(self,request,id = None):
+        loan_requests = Loan.objects.filter(id = id)
+        serializer = LoanSerializer(loan_requests, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
+    
 
 class AccountLoanRepaymentView(views.APIView):
     def post(self,request,format=None):

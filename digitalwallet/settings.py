@@ -13,7 +13,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from email.policy import default
 from pathlib import Path
 import os
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# Quick-start development sDJANGO_SETTINGS_MODULE = digitalwallet.settings
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,20 +26,49 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&4y5=rh&+!@^y-ins^!b-4twb84j8^4uku=i_kfg)y!e_4n$4d'
+SECRET_KEY = '_xf!(e78v(+gdb(^ci&0+#@-1)lp&b(fxvx1_&o(#s_kmj&n*&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CSRF_COOKIE_PATH = '/'
+CSRF_COOKIE_SAMESITE = 'Strict' 
+CSRF_COOKIE_SECURE = True
+CORS_ALLOWED_ORIGINS = [
+   "http://localhost:3004"
+]
+TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
 
 # Application definition
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'TEST_REQUEST_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.authentication.TokenAuthentication',
+
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
+}
 
 INSTALLED_APPS = [
     
-    'wallet',
-    'api',
+   
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,11 +76,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'import_export',
+    'corsheaders'
+    'wallet',
+    'api',
 ]
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,11 +95,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'digitalwallet.urls'
-
+REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [REAL_BASE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,11 +127,14 @@ WSGI_APPLICATION = 'digitalwallet.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':"django.db.backends.postgresql",
-        "NAME":"myproject",
-        "USER":"myprojectuser",
-        "PASSWORD":"password",
+        "NAME":"digitalwallet",
+        "USER":"shamim",
+        "PASSWORD":"enchantment",
         "HOST":"localhost",
         "PORT":5432,
+        'TEST' : {
+            'NAME' : 'my_project_test'
+        }
     }
 }
 
@@ -134,7 +176,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT='Media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 STATICFILE_DIRS=(
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(REAL_BASE_DIR,'static'),
 )
 
 # Default primary key field type
